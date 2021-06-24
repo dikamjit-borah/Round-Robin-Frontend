@@ -3,7 +3,7 @@ import "./AddTopicComponent.scss";
 import BASE_URL from "../../utilities/Constants"
 import axios from "axios"
 
-function AddTopicComponent({teacher_id, teacher_name}) {
+function AddTopicComponent({teacher_id, teacher_name, setAddedSchedule}) {
   const validateAndConfirm = (event) => {
 
     let schedule_details = {};
@@ -31,14 +31,20 @@ function AddTopicComponent({teacher_id, teacher_name}) {
         scheduled_end_time
       }
     }).then(function (response) {
+      if(!response.data["isValidStart"])
+        {
+          alert("Time overlap. Please adjust start and end time")
+        }
        console.log(response);
+   
+       setAddedSchedule(true)
       });
   }
   return (
     <div className="addTopic-parent">
       <form
         onSubmit={(e) => {
-         // e.preventDefault()
+         e.preventDefault()
           validateAndConfirm(e);
         }}
       >

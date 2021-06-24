@@ -14,6 +14,8 @@ function App() {
   const [currentTeacher, setCurrentTeacher] = useState();
   const [allTeachers, setAllTeachers] = useState([]);
 
+  const [addSchedule,setAddedSchedule] = useState(false);
+
   useEffect(() => {
     getAllTeachers();
   }, []);
@@ -71,11 +73,13 @@ function App() {
         <AddTopicComponent
           teacher_id={currentTeacher}
           teacher_name={currentTeacher}
+        
+          setAddedSchedule={setAddedSchedule}
         ></AddTopicComponent>
       </Modal>
       <div className="AppChild app-right">
         {console.log("currentTeacher", currentTeacher)}
-        <WeekComponent teacher_id={currentTeacher}></WeekComponent>
+        <WeekComponent teacher_id={currentTeacher}  addSchedule={addSchedule} ></WeekComponent>
       </div>
     </div>
   );

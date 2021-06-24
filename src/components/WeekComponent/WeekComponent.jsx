@@ -5,10 +5,10 @@ import Modal from "react-modal";
 import AddTopicComponent from "../AddTopicComponent/AddTopicComponent";
 import axios from "axios";
 import BASE_URL from "../../utilities/Constants"
-function WeekComponent({teacher_id}) {
+function WeekComponent({teacher_id, addSchedule}) {
   
 
-  console.log("Fetching weekview for ", teacher_id);
+ 
   const [currentWeekStart, setCurrentWeekStart] = useState("2021-02-01");
   const [currentWeekEnd, setCurrentWeekEnd] = useState("2021-02-07");
   
@@ -16,7 +16,7 @@ function WeekComponent({teacher_id}) {
   const [weekCount, setWeekCount] = useState(1);
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
-  const [data, setData] = useState([]);
+
 
   const getPrevWeek = () => {
     let weekStart = currentWeekStart;
@@ -51,7 +51,8 @@ function WeekComponent({teacher_id}) {
   useEffect(() => {
     clearData();
     setIncomingDataInUI();
-  }, [weekCount, teacher_id]);
+    console.log("Fetching weekview for ", teacher_id);
+  }, [weekCount, teacher_id, addSchedule]);
 
   const clearData = () => {
     for (let i = 0; i < ids.length; i++) {
@@ -71,7 +72,7 @@ function WeekComponent({teacher_id}) {
         },
       })
       .then(function (response) {
-        setData(response.data);
+       
         console.log("response data",response.data);
         setUI(response.data)
       });
@@ -99,10 +100,12 @@ function WeekComponent({teacher_id}) {
     let timeColumnId = document.getElementById("time-column");
     let timeColumnContent = "";
 
+    let hrs = ["00:00", "01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00",]
+
     let j = 0;
     for (let i = 0; i < 24; i++) {
       timeColumnContent += `<p style="position:absolute;margin-top:${j}px">${
-        i + 1 
+        hrs[i]
       }hrs</p>`;
       j += 42;
     }
@@ -132,7 +135,7 @@ function WeekComponent({teacher_id}) {
       let id = calculateColId(data[i]["scheduled_date"])
       colId.push(id);
       let top = calculateMarginTop(data[i]["scheduled_start_time"])
-      marginTop.push((top - 1) * 42);
+      marginTop.push((top) * 42);
     }
 
 
