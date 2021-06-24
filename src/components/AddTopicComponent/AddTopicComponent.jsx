@@ -21,7 +21,7 @@ function AddTopicComponent({startingTime}) {
       >
         
         <label for="scheduled_topic">Topic Name:</label>
-        <input type="topic" id="scheduled_topic" />
+        <input type="text" id="scheduled_topic" />
         <label for="scheduled_date">Select a Date:</label>
         <input type="date" id="scheduled_date" />
         <label for="scheduled_time">Select starting time:</label>

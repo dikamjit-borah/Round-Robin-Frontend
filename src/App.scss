@@ -1,5 +1,12 @@
 .App{
     margin: 12px;
+
+    .teachers-div{
+      display: flex;
+      .teachers-child{
+        flex: 1;
+      }
+    }
   .AppChild{
       margin: 12px;
       flex: 1;

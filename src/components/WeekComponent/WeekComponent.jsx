@@ -1,118 +1,162 @@
+
 import { React, useState, useEffect } from "react";
 import "./WeekComponent.scss";
 import Modal from "react-modal";
 import AddTopicComponent from "../AddTopicComponent/AddTopicComponent";
-import axios from 'axios';
-
-
-function WeekComponent() {
+import axios from "axios";
+import BASE_URL from "../../utilities/Constants"
+function WeekComponent({teacher_id}) {
   
-  const BASE_URL = "http://localhost:8080"
+
+  console.log("Fetching weekview for ", teacher_id);
+  const [currentWeekStart, setCurrentWeekStart] = useState("2021-02-01");
+  const [currentWeekEnd, setCurrentWeekEnd] = useState("2021-02-07");
   
-  const [ids, setIds] = useState([1, 2, 3, 4, 5, 6, 7]);
+  const [ids, setIds] = useState([1,2,3,4,5,6,7]);
   const [weekCount, setWeekCount] = useState(1);
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  
-  let data = [
-    {
-      schedule_id: 1,
-      scheduled_topic: "Marriage",
-      scheduled_date: "3",
-      scheduled_start_time: "12",
-      scheduled_end_time: "14",
-    },
-    {
-      schedule_id: 2,
-      scheduled_topic: "anniversaru",
-      scheduled_date: "4",
-      scheduled_start_time: "11",
-      scheduled_end_time: "12",
-    },
-    {
-      schedule_id: 3,
-      scheduled_topic: "Reception",
-      scheduled_date: "7",
-      scheduled_start_time: "9",
-      scheduled_end_time: "15",
-    },
-    {
-      schedule_id: 5,
-      scheduled_topic: "Pokor",
-      scheduled_date: "12",
-      scheduled_start_time: "12",
-      scheduled_end_time: "15",
-    },
-  ];
+
+  const [data, setData] = useState([]);
+
+  const getPrevWeek = () => {
+    let weekStart = currentWeekStart;
+    let res = weekStart.split("-");
+    let nextDate = parseInt(res[2]) - 7;
+    let nextWeekStart = `2021-02-${nextDate}`;
+
+    let weekEnd = currentWeekEnd;
+    res = weekEnd.split("-");
+    nextDate = parseInt(res[2]) - 7;
+    let nextWeekEnd = `2021-02-${nextDate}`;
+
+    setCurrentWeekStart(nextWeekStart);
+    setCurrentWeekEnd(nextWeekEnd);
+  };
+
+  const getNextWeek = () => {
+    let weekStart = currentWeekStart;
+    let res = weekStart.split("-");
+    let nextDate = parseInt(res[2]) + 7;
+    let nextWeekStart = `2021-02-${nextDate}`;
+
+    let weekEnd = currentWeekEnd;
+    res = weekEnd.split("-");
+    nextDate = parseInt(res[2]) + 7;
+    let nextWeekEnd = `2021-02-${nextDate}`;
+
+    setCurrentWeekStart(nextWeekStart);
+    setCurrentWeekEnd(nextWeekEnd);
+  };
 
   useEffect(() => {
     clearData();
-    setData();
-  }, [weekCount]);
+    setIncomingDataInUI();
+  }, [weekCount, teacher_id]);
 
   const clearData = () => {
     for (let i = 0; i < ids.length; i++) {
-      let x = document.getElementById(ids[i])
-     // console.log(x);
-      if(x)
-        x.innerHTML = "";
+      let x = document.getElementById(ids[i]);
+      // console.log(x);
+      if (x) x.innerHTML = "";
     }
   };
 
-  const setData = () => { 
+  const setIncomingDataInUI = () => {
+    axios
+      .get(`${BASE_URL}/api/week_view`, {
+        params: {
+          teacher_id: `${teacher_id}`,
+          week_start_date: `${currentWeekStart}`,
+          week_end_date: `${currentWeekEnd}`,
+        },
+      })
+      .then(function (response) {
+        setData(response.data);
+        console.log("response data",response.data);
+        setUI(response.data)
+      });
 
-    axios.get(`${BASE_URL}/api/week_view`, {
-      params: {
-        teacher_id:"1624461442478",
-        week_start_date: '2021-02-01',
-        week_end_date: '2021-02-07'
-      }
-    })
-    .then(function (response) {
-      console.log(response);
-    })
 
+  };
+
+  const calculateColId = (givenDate) => {
+     
+      let onlyDate = givenDate.split("T")
+      let onlyDay = onlyDate[0].split("-")
+      console.log("given Date id ", onlyDay[2]);
+      return parseInt(onlyDay[2])
+  }
+
+  const calculateMarginTop = (givenStartTime) => {
     
+    let hrs = givenStartTime.split(":")[0]
+    console.log(hrs);
+    return hrs;
+  }
+
+  const setTimeColumn =() =>{
+        
+    let timeColumnId = document.getElementById("time-column");
+    let timeColumnContent = "";
+
+    let j = 0;
+    for (let i = 0; i < 24; i++) {
+      timeColumnContent += `<p style="position:absolute;margin-top:${j}px">${
+        i + 1 
+      }hrs</p>`;
+      j += 42;
+    }
+
+    if (timeColumnId) timeColumnId.innerHTML = timeColumnContent;
+  }
+
+  const calculateHeight = (startTime, endTime) =>{
+
+      let startHrs = parseInt (startTime.split(":")[0])
+      let endHrs = parseInt (endTime.split(":")[0])
+
+      let height = endHrs - startHrs
+      console.log("height", height);
+      return height
+  }
+
+  const setUI = (data) =>{
+
+    setTimeColumn()
+
     let colId = [];
     let marginTop = [];
+    //console.log("data",data);
+
     for (let i = 0; i < data.length; i++) {
-      colId.push(data[i]["scheduled_date"]);
-      marginTop.push(parseInt(data[i]["scheduled_start_time"] - 1)*42)
-    }
-
-    console.log(marginTop);
-
-    for(let i = 0; i<24; i++)
-    {
-      let x = document.getElementById("time-column");
-      let y = `<div style="margin-top:${(marginTop[i])}px">${i+1}`
-    }
-
-    let timeColumnId = document.getElementById("time-column")
-    let timeColumnContent = ""
-
-    let j = 0
-    for(let i = 0; i<24; i++)
-    {
-      
-       timeColumnContent += `<p style="position:absolute;margin-top:${(j)}px">${i+1}</p>`
-       j+=42
-     
+      let id = calculateColId(data[i]["scheduled_date"])
+      colId.push(id);
+      let top = calculateMarginTop(data[i]["scheduled_start_time"])
+      marginTop.push((top - 1) * 42);
     }
 
 
-
-    if (timeColumnId) timeColumnId.innerHTML = timeColumnContent ;
-
-
+    console.log("colid",colId);
+    
     for (let i = 0; i < colId.length; i++) {
       let x = document.getElementById(colId[i]);
-     
-      let duration = parseInt(data[i]["scheduled_end_time"]) - parseInt(data[i]["scheduled_start_time"])
-      console.log(duration);
-      let y = `<div style="margin-top:${marginTop[i]}px; background-color:#bbdefb; height:${duration*42}px">${data[i]["scheduled_topic"]}</div>`
-      if (x) x.innerHTML = y ;
+
+      let duration = calculateHeight((data[i]["scheduled_start_time"]), (data[i]["scheduled_end_time"]))
+      let y = `<div style="margin-top:${
+        marginTop[i]
+      }px; background-color:#bbdefb; height:${duration * 42}px">${
+        data[i]["scheduled_topic"]
+      }</div>`;
+      if (x) x.innerHTML = y;
     }
-  };
+  } 
+
+
+
+
+
+
+
   const handleAllHr = () => {
     const hrs = [];
     for (let i = 0; i < 24; i++) {
@@ -142,8 +186,6 @@ function WeekComponent() {
       }
     }
   };
-
-
 
   const handleDayOne = (event) => {
     timeBasedOnClientY(event.pageY);
@@ -183,9 +225,10 @@ function WeekComponent() {
   const generatePrevId = () => {
     let count = weekCount - 1;
     if (count >= 1) {
+      getPrevWeek();
       let newIds = ids;
       for (let i = 0; i < newIds.length; i++) {
-        newIds[i] -= 7;
+        (newIds[i]) = parseInt(newIds[i]) -  7;
       }
       setWeekCount(count);
       setIds(newIds);
@@ -194,10 +237,14 @@ function WeekComponent() {
   const generateNextId = () => {
     let count = weekCount + 1;
     if (count <= 4) {
+  
+      getNextWeek();
+     
       let newIds = ids;
       for (let i = 0; i < newIds.length; i++) {
-        newIds[i] += 7;
+        (newIds[i]) = parseInt(newIds[i]) + 7;
       }
+
       setWeekCount(count);
       setIds(newIds);
     }
@@ -222,7 +269,7 @@ function WeekComponent() {
         <AddTopicComponent startingTime={startingTime}></AddTopicComponent>
       </Modal>
       <div className="calender-heading">
-      <div className="calender-header">Time</div>
+        <div className="calender-header">Time</div>
         <div className="calender-header">{ids[0]}</div>
         <div className="calender-header">{ids[1]}</div>
         <div className="calender-header">{ids[2]}</div>
@@ -235,14 +282,8 @@ function WeekComponent() {
       {handleAllHr()}
 
       <div className="calender-columns">
+        <div className="calender-column" id="time-column"></div>
 
-        
-      <div
-          className="calender-column"
-          id="time-column"
-         
-        ></div>
-        
         <div
           className="calender-column"
           id={ids[0]}
