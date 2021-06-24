@@ -1,4 +1,4 @@
 
-const BASE_URL = "http://localhost:8080"
+const BASE_URL = "https://round-robin-scheduler.herokuapp.com"
 
 export default BASE_URL

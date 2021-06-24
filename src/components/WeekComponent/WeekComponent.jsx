@@ -63,6 +63,7 @@ function WeekComponent({teacher_id, addSchedule}) {
   };
 
   const setIncomingDataInUI = () => {
+    setTimeColumn()
     axios
       .get(`${BASE_URL}/api/week_view`, {
         params: {
@@ -124,9 +125,6 @@ function WeekComponent({teacher_id, addSchedule}) {
   }
 
   const setUI = (data) =>{
-
-    setTimeColumn()
-
     let colId = [];
     let marginTop = [];
     //console.log("data",data);
@@ -154,12 +152,6 @@ function WeekComponent({teacher_id, addSchedule}) {
     }
   } 
 
-
-
-
-
-
-
   const handleAllHr = () => {
     const hrs = [];
     for (let i = 0; i < 24; i++) {
@@ -170,6 +162,8 @@ function WeekComponent({teacher_id, addSchedule}) {
         ></div>
       );
     }
+    
+   
     return hrs;
   };
 
@@ -192,37 +186,37 @@ function WeekComponent({teacher_id, addSchedule}) {
 
   const handleDayOne = (event) => {
     timeBasedOnClientY(event.pageY);
-    setModalIsOpen(true);
+    //setModalIsOpen(true);
   };
 
   const handleDayTwo = (event) => {
     timeBasedOnClientY(event.pageY);
-    setModalIsOpen(true);
+//setModalIsOpen(true);
   };
 
   const handleDayThree = (event) => {
     timeBasedOnClientY(event.pageY);
-    setModalIsOpen(true);
+   // setModalIsOpen(true);
   };
 
   const handleDayFour = (event) => {
     timeBasedOnClientY(event.pageY);
-    setModalIsOpen(true);
+    //setModalIsOpen(true);
   };
 
   const handleDayFive = (event) => {
     timeBasedOnClientY(event.pageY);
-    setModalIsOpen(true);
+    //setModalIsOpen(true);
   };
 
   const handleDaySix = (event) => {
     timeBasedOnClientY(event.pageY);
-    setModalIsOpen(true);
+   // setModalIsOpen(true);
   };
 
   const handleDaySeven = (event) => {
     timeBasedOnClientY(event.pageY);
-    setModalIsOpen(true);
+    //setModalIsOpen(true);
   };
 
   const generatePrevId = () => {

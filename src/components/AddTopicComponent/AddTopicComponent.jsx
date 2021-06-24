@@ -3,7 +3,41 @@ import "./AddTopicComponent.scss";
 import BASE_URL from "../../utilities/Constants"
 import axios from "axios"
 
-function AddTopicComponent({teacher_id, teacher_name, setAddedSchedule}) {
+function AddTopicComponent({teacher_id, teacher_name, setAddedSchedule,startingTime, date}) {
+  
+
+  function add0ToDate()
+  {
+    if(!!!date)
+      return ""
+    let newDate;
+    let yymmdd = date.split("-")
+    let dd = (date.split("-")[2])
+
+    if(parseInt(dd)<=9)
+    {
+      dd = "0"+dd
+    }
+
+    newDate = yymmdd[0]+ "-" + yymmdd[1] + "-" + dd
+    return newDate;
+  }
+
+  function timeIndexToHrs(timeIndex)
+  {
+
+    let hrs
+    if(parseInt(timeIndex)<=9)
+    {
+        hrs = "0"+timeIndex+":00"
+    }
+    else{
+      hrs = timeIndex + ":00";
+    }
+    console.log(hrs);
+    return hrs
+  }
+
   const validateAndConfirm = (event) => {
 
     let schedule_details = {};
@@ -31,13 +65,17 @@ function AddTopicComponent({teacher_id, teacher_name, setAddedSchedule}) {
         scheduled_end_time
       }
     }).then(function (response) {
+      console.log("isvalide start",response.data);
       if(!response.data["isValidStart"])
         {
           alert("Time overlap. Please adjust start and end time")
         }
-       console.log(response);
+        
+          setAddedSchedule(true)
+        
+       
    
-       setAddedSchedule(true)
+       
       });
   }
   return (
@@ -48,15 +86,18 @@ function AddTopicComponent({teacher_id, teacher_name, setAddedSchedule}) {
           validateAndConfirm(e);
         }}
       >
+
+        
+        <div>{date}</div>
         
         <label for="scheduled_topic">Topic Name:</label>
         <input type="text" id="scheduled_topic" />
-        <label for="scheduled_date">Select a Date:</label>
-        <input type="date" id="scheduled_date" />
+        <label for="scheduled_date" >Select a Date:</label>
+        <input type="date" defaultValue={add0ToDate()} id="scheduled_date" />
         <label for="scheduled_start_time">Select starting time:</label>
-        <input type="time" id="scheduled_start_time" />
+        <input type="time" id="scheduled_start_time" defaultValue={timeIndexToHrs(startingTime)}/>
         <label for="scheduled_end_time">Select ending time:</label>
-        <input type="time" id="scheduled_end_time" />
+        <input type="time" id="scheduled_end_time" defaultValue={timeIndexToHrs( parseInt(startingTime) + 1)} />
         <button type="submit">Confirm Schedule</button>
       </form>
      

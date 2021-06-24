@@ -7,14 +7,15 @@ import NavigationBarComponent from "./components/NavigationBarComponent/Navigati
 
 import axios from "axios";
 import BASE_URL from "./utilities/Constants";
+import DayComponent from "./components/DayComponent/DayComponent";
 
 function App() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
-
   const [currentTeacher, setCurrentTeacher] = useState();
   const [allTeachers, setAllTeachers] = useState([]);
+  const [addSchedule, setAddedSchedule] = useState(false);
 
-  const [addSchedule,setAddedSchedule] = useState(false);
+  const [isWeekView, setIsWeekView] = useState(true);
 
   useEffect(() => {
     getAllTeachers();
@@ -23,7 +24,7 @@ function App() {
   const getAllTeachers = () => {
     console.log("Fetching teachers");
     axios.get(`${BASE_URL}/api/all_teachers`, {}).then(function (response) {
-      //setCurrentTeacher(response.data[0]["teacher_id"]);
+      setCurrentTeacher(response.data[0]["teacher_id"]);
       setAllTeachers(response.data);
       console.log("response data", response.data);
       //setUI(response.data)
@@ -61,7 +62,28 @@ function App() {
           <button>Add Teacher</button>
         </div>
       </div>
-
+      <div className="view-div">
+        {" "}
+        <input
+          type="radio"
+          value="Week View"
+          name="view"
+          defaultChecked={true}
+          onClick={() => {
+            setIsWeekView(true);
+          }}
+        />{" "}
+        Week View
+        <input
+          type="radio"
+          value="Day View"
+          name="view"
+          onClick={() => {
+            setIsWeekView(false);
+          }}
+        />{" "}
+        Day View
+      </div>
       <button onClick={openModal}>Add Topic</button>
       <Modal
         isOpen={modalIsOpen}
@@ -73,13 +95,24 @@ function App() {
         <AddTopicComponent
           teacher_id={currentTeacher}
           teacher_name={currentTeacher}
-        
           setAddedSchedule={setAddedSchedule}
         ></AddTopicComponent>
       </Modal>
       <div className="AppChild app-right">
         {console.log("currentTeacher", currentTeacher)}
-        <WeekComponent teacher_id={currentTeacher}  addSchedule={addSchedule} ></WeekComponent>
+
+        {isWeekView ? (
+          <WeekComponent
+            teacher_id={currentTeacher}
+            addSchedule={addSchedule}
+          ></WeekComponent>
+        ) : (
+          <DayComponent
+            teacher_id={currentTeacher}
+            addSchedule={addSchedule}
+            setAddedSchedule = {setAddedSchedule}
+          ></DayComponent>
+        )}
       </div>
     </div>
   );
