@@ -8,6 +8,7 @@ import NavigationBarComponent from "./components/NavigationBarComponent/Navigati
 import axios from "axios";
 import BASE_URL from "./utilities/Constants";
 import DayComponent from "./components/DayComponent/DayComponent";
+import MonthComponent from "./components/MonthComponent/MonthComponent";
 
 function App() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -15,7 +16,7 @@ function App() {
   const [allTeachers, setAllTeachers] = useState([]);
   const [addSchedule, setAddedSchedule] = useState(false);
 
-  const [isWeekView, setIsWeekView] = useState(true);
+  const [isWeekView, setIsWeekView] = useState(1);
 
   useEffect(() => {
     getAllTeachers();
@@ -70,7 +71,7 @@ function App() {
           name="view"
           defaultChecked={true}
           onClick={() => {
-            setIsWeekView(true);
+            setIsWeekView(1);
           }}
         />{" "}
         Week View
@@ -79,10 +80,19 @@ function App() {
           value="Day View"
           name="view"
           onClick={() => {
-            setIsWeekView(false);
+            setIsWeekView(2);
           }}
         />{" "}
         Day View
+        <input
+          type="radio"
+          value="Day View"
+          name="view"
+          onClick={() => {
+            setIsWeekView(3);
+          }}
+        />{" "}
+        Month View
       </div>
       <button onClick={openModal}>Add Topic</button>
       <Modal
@@ -101,18 +111,18 @@ function App() {
       <div className="AppChild app-right">
         {console.log("currentTeacher", currentTeacher)}
 
-        {isWeekView ? (
+        {isWeekView == 1 ? (
           <WeekComponent
             teacher_id={currentTeacher}
             addSchedule={addSchedule}
           ></WeekComponent>
-        ) : (
+        ) : isWeekView == 2 ? (
           <DayComponent
             teacher_id={currentTeacher}
             addSchedule={addSchedule}
-            setAddedSchedule = {setAddedSchedule}
+            setAddedSchedule={setAddedSchedule}
           ></DayComponent>
-        )}
+        ) : <MonthComponent></MonthComponent>}
       </div>
     </div>
   );

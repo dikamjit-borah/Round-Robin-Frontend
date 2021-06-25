@@ -187,7 +187,8 @@ function DayComponent({ teacher_id, addSchedule ,setAddedSchedule }) {
         <div
           className="calender-row"
           style={{ marginTop: `${i * 42}px` }}
-        ></div>
+        >
+        </div>
       );
     }
     return hrs;
