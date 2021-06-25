@@ -218,7 +218,7 @@ function DayComponent({ teacher_id, addSchedule ,setAddedSchedule }) {
       </Modal>
       <div className="calender-heading">
         <div className="calender-header">Time</div>
-        <div className="calender-header">{id}</div>
+        <div className="calender-header">{id} Feb</div>
       </div>
 
       {handleAllHr()}

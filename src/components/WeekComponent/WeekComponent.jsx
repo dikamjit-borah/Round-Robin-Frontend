@@ -267,13 +267,13 @@ function WeekComponent({teacher_id, addSchedule}) {
       </Modal>
       <div className="calender-heading">
         <div className="calender-header">Time</div>
-        <div className="calender-header">{ids[0]}</div>
-        <div className="calender-header">{ids[1]}</div>
-        <div className="calender-header">{ids[2]}</div>
-        <div className="calender-header">{ids[3]}</div>
-        <div className="calender-header">{ids[4]}</div>
-        <div className="calender-header">{ids[5]}</div>
-        <div className="calender-header">{ids[6]}</div>
+        <div className="calender-header">{ids[0]} Feb</div>
+        <div className="calender-header">{ids[1]} Feb</div>
+        <div className="calender-header">{ids[2]} Feb</div>
+        <div className="calender-header">{ids[3]} Feb</div>
+        <div className="calender-header">{ids[4]} Feb</div>
+        <div className="calender-header">{ids[5]} Feb</div>
+        <div className="calender-header">{ids[6]} Feb</div>
       </div>
 
       {handleAllHr()}
