@@ -1,5 +1,24 @@
 .day-parent{
-    
+    .next-container{
+        text-align: center;
+
+        .next-btn {
+            font-weight: bolder;
+            font-size: 1.2rem;
+            background-color: white;
+            border-radius: 12px;
+            border:solid 1px grey;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            color:grey;
+        }
+        .next-btn:hover {
+            cursor: pointer;
+            background: rgb(180, 180, 180);
+        }
+    }
+
+
     position: relative;
     .calender-columns{
         width: 100%;
@@ -7,7 +26,7 @@
         display: flex;
         .calender-column{
             flex: 1;
-            border: 1px solid black;
+            border: 1px solid rgb(214, 211, 211);;
         }
     }
 
@@ -17,13 +36,17 @@
         .calender-header{
             flex: 1;
             text-align: center;
-            border: 1px solid black;
+            margin-bottom: 10px;
+            font-weight: 700;
+            font-size: 1rem;
+            color: grey;
+            //border: 1px solid rgb(214, 211, 211);;
         }
     }
 
     .calender-row{
         position: absolute;
-        background-color: black;
+        background-color: rgb(214, 211, 211);
         height: 1px;
         width: 100%;
         

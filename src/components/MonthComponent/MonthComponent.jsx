@@ -49,7 +49,7 @@ function MonthComponent({ teacher_id }) {
         }
         
       }
-      colDivArray.push(<div className="col-item"> {globalDay} Feb, {noteCounter} tasks</div>);
+      colDivArray.push(<div className="col-item"> <span style={{fontSize:"26px",color:"grey", fontWeight:"700"}}>{globalDay} Feb</span><p >🕒 {noteCounter} schedules</p></div>);
       globalDay++;
     }
     return colDivArray;
@@ -65,7 +65,7 @@ function MonthComponent({ teacher_id }) {
   if(isLoaded)
   return (
     <div className="month-parent">
-      <p style={{ margin: "8px" }}>February, 2021</p>
+     
       <div className="row-div">{makeDivs()}</div>
     </div>
   );

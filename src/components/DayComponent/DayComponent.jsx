@@ -80,11 +80,15 @@ function DayComponent({ teacher_id, addSchedule ,setAddedSchedule }) {
         data[i]["scheduled_start_time"],
         data[i]["scheduled_end_time"]
       );
-      let y = `<div style="margin-top:${
+      let y = `<div class="has-topic" style="margin-top:${
         marginTop[i]
-      }px; background-color:#bbdefb; height:${duration * 42}px">${
+      }px; color:#fafafa; background-color:#2a3eb1; height:${
+        duration * 42
+      }px"><span style="font-size:14px">${
         data[i]["scheduled_topic"]
-      }</div>`;
+      }</span> from <span style="font-size:10px">${
+        data[i]["scheduled_start_time"]
+      } to ${data[i]["scheduled_end_time"]}</span></div>`;
       if (x) x.innerHTML = y;
     }
   };
@@ -196,13 +200,15 @@ function DayComponent({ teacher_id, addSchedule ,setAddedSchedule }) {
 
   return (
     <div className="day-parent">
-      <button id="previous" onClick={generatePrevId}>
-        Previous Day
-      </button>
+      <div className="next-container">
+      <button id="previous" className="next-btn" onClick={generatePrevId}>
+          {"<"}
+        </button>
 
-      <button id="next" onClick={generateNextId}>
-        Next Day
-      </button>
+        <button id="next" className="next-btn" onClick={generateNextId}>
+          {">"}
+        </button>
+        </div>
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={() => {
@@ -217,7 +223,7 @@ function DayComponent({ teacher_id, addSchedule ,setAddedSchedule }) {
         date={currentDayStart} setAddedSchedule={setAddedSchedule}></AddTopicComponent>
       </Modal>
       <div className="calender-heading">
-        <div className="calender-header">Time</div>
+        <div className="calender-header">⬇️Time - Day➡️</div>
         <div className="calender-header">{id} Feb</div>
       </div>
 

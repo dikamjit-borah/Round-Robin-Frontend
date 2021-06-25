@@ -1,14 +1,62 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,600;0,700;1,200&display=swap');
 .App{
-    margin: 12px;
+    font-family: 'Nunito', sans-serif;
+    padding: 25px 35px;
+    
+  .top-section{
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 12px;
+    padding-bottom: 25px;
+    border-bottom: 1px solid rgb(218, 215, 215);
 
-    .teachers-div{
-      display: flex;
-      .teachers-child{
-        flex: 1;
+    .teachers-div {
+      margin-right: 50px;
+      
+      span {
+        margin-right: 10px;
+        font-weight: 600;
+      }
+
+      select {
+        border:none;
+        font-family: 'Nunito', sans-serif;
+      }
+      select:focus {
+        border:none;
+        outline: none;
       }
     }
+  }
+  .teachers-div{
+    display: flex;
+  }
   .AppChild{
       margin: 12px;
       flex: 1;
+  }
+  .view-div {
+    span {
+      margin-right: 10px;
+      font-weight: 600;
+    }
+  }
+  .add-schedule-btn {
+    position: fixed;
+    top:90vh;
+    left:93vw;
+    padding:5px 15px;
+    z-index: 1;
+    font-family: 'Nunito', sans-serif;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 2rem;
+    color:white;
+    border: none;
+    background: #f0095a;
+  }
+  .add-schedule-btn:hover {
+    cursor: pointer;
+    background: #f50057;
   }
 }

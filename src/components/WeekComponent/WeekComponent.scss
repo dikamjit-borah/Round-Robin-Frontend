@@ -1,12 +1,46 @@
 .calender-parent{
     position: relative;
+  
+    .next-container{
+        text-align: center;
+
+        .next-btn {
+            font-weight: bolder;
+            font-size: 1.2rem;
+            background-color: white;
+            border-radius: 12px;
+            border:solid 1px grey;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            color:grey;
+        }
+        .next-btn:hover {
+            cursor: pointer;
+            background: rgb(180, 180, 180);
+        }
+    }
+    
+
     .calender-columns{
         width: 100%;
-        height: 1008px;  //calculated for 40px * no of hours todo - calc()
+        height: 1008px;  //calculated for 42px * no of hours todo - calc()
         display: flex;
+  
         .calender-column{
+            width: 100%;
+            padding-left: auto;
+            text-align: center !important ;
             flex: 1;
-            border: 1px solid black;
+            border: 1px solid rgb(214, 211, 211);
+         
+        }
+
+        #time-column{
+            p{
+                flex: 1;
+            }
+
+
         }
     }
 
@@ -16,13 +50,18 @@
         .calender-header{
             flex: 1;
             text-align: center;
-            border: 1px solid black;
+            margin-bottom: 10px;
+            font-weight: 700;
+            font-size: 1rem;
+            color: grey;
+            // border: 1px solid black;
+
         }
     }
 
     .calender-row{
         position: absolute;
-        background-color: black;
+        background-color: rgb(214, 211, 211);
         height: 1px;
         width: 100%;
         
