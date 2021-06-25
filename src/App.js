@@ -122,7 +122,7 @@ function App() {
             addSchedule={addSchedule}
             setAddedSchedule={setAddedSchedule}
           ></DayComponent>
-        ) : <MonthComponent></MonthComponent>}
+        ) : <MonthComponent teacher_id={currentTeacher}></MonthComponent>}
       </div>
     </div>
   );
