@@ -1,0 +1,21 @@
+[{
+    "schedule_id": 1,
+    "scheduled_topic": "Topic Name",
+    "scheduled_date": "03-06-2021",
+    "scheduled_start_time": "12:10",
+    "scheduled_end_time": "14:10"
+}, {
+    "schedule_id": 2,
+    "scheduled_topic": "Topic Name",
+    "scheduled_date": "04-06-2021",
+    "scheduled_start_time": "11:00",
+    "scheduled_end_time": "12:00"
+
+}, {
+    "schedule_id": 3,
+    "scheduled_topic": "Topic Name",
+    "scheduled_date": "07-06-2021",
+    "scheduled_start_time": "09:10",
+    "scheduled_end_time": "15:10"
+
+}]

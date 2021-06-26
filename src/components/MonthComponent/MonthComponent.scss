@@ -1,0 +1,17 @@
+.month-parent{
+ 
+    .row-div{
+        .col-div{
+            
+            display: flex;
+            .col-item{
+                flex: 1;
+                margin: 8px;
+               padding: 18px;
+                border: 1px solid #d6d3d3;
+                border-radius: 6px;
+                
+            }
+        }
+    }
+}
