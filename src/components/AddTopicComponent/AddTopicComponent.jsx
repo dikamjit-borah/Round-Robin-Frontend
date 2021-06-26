@@ -77,9 +77,15 @@ function AddTopicComponent({
     }).then(function (response) {
       console.log("isvalid start", response.data);
       if (!response.data["isValidStart"]) {
-        alert("Time overlap. Please adjust start and end time");
+        setAddedSchedule(true);
+        alert("Time overlap! Please adjust start and end time");
       }
-      setAddedSchedule(true);
+      else{
+        setAddedSchedule(true);
+        alert("New schedule created");
+      }
+      
+      
     });
   };
   return (
