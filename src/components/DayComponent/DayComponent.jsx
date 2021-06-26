@@ -51,9 +51,7 @@ function DayComponent({ teacher_id, addSchedule ,setAddedSchedule }) {
 
     let j = 0;
     for (let i = 0; i < 24; i++) {
-      timeColumnContent += `<p style="position:absolute;margin-top:${j}px">${
-        hrs[i]
-      }hrs</p>`;
+      timeColumnContent += `<p style="width:100%; text-align:center;color:grey; font-weight:700; position:absolute;margin-top:${j}px">${hrs[i]} hrs</p>`;
       j += 42;
     }
 
@@ -82,14 +80,14 @@ function DayComponent({ teacher_id, addSchedule ,setAddedSchedule }) {
       );
       let y = `<div class="has-topic" style="margin-top:${
         marginTop[i]
-      }px; color:#fafafa; background-color:#2a3eb1; height:${
+      }px; height:${
         duration * 42
-      }px"><span style="font-size:14px">${
+      }px"><p style="header">${
         data[i]["scheduled_topic"]
-      }</span> from <span style="font-size:10px">${
+      }</p><p style="font-size:10px">${
         data[i]["scheduled_start_time"]
-      } to ${data[i]["scheduled_end_time"]}</span></div>`;
-      if (x) x.innerHTML = y;
+      } to ${data[i]["scheduled_end_time"]}</p></div>`;
+      if (x) x.innerHTML = x.innerHTML + y;
     }
   };
 
@@ -209,7 +207,7 @@ function DayComponent({ teacher_id, addSchedule ,setAddedSchedule }) {
           {">"}
         </button>
         </div>
-      <Modal
+      <Modal className = "create-schedule-modal"
         isOpen={modalIsOpen}
         onRequestClose={() => {
           setModalIsOpen(false);

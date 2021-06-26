@@ -32,6 +32,30 @@
             text-align: center !important ;
             flex: 1;
             border: 1px solid rgb(214, 211, 211);
+            position: relative;
+
+            .has-topic {
+                position:absolute;
+                margin:auto;
+                left:2.5px;
+                width:98%;
+                color:#fafafa;
+                background-color:#e3f2fd;
+                border-radius: 2px;
+                text-align: center;
+                
+                p{
+                    margin: 0;
+                    color: #8c9eff;
+                    font-weight: 600;
+                }
+                .header {
+                    
+                    font-weight: 900;
+                    overflow: hidden;
+                    font-size:16px;
+                }
+            }
          
         }
 

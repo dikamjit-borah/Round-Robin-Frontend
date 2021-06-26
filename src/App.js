@@ -17,10 +17,11 @@ function App() {
   const [addSchedule, setAddedSchedule] = useState(false);
 
   const [isWeekView, setIsWeekView] = useState(1);
+  const [isTeacherCreated, setIsTeacherCreated] = useState(false)
 
   useEffect(() => {
     getAllTeachers();
-  }, []);
+  }, [isTeacherCreated]);
 
   const getAllTeachers = () => {
     console.log("Fetching teachers");
@@ -32,31 +33,50 @@ function App() {
     });
   };
 
+  const createTeacher = (e) => {
+    setIsTeacherCreated(false)
+    e.preventDefault()
+   // alert(`Teacher ${e.target[0].value} created` );
+    console.log(e.target[0].value);
+    axios({
+      method: "post",
+      url: `${BASE_URL}/api/add_teacher`,
+      data: {
+        teacher_name:e.target[0].value,
+      },
+    }).then(function (response) {
+      setIsTeacherCreated(true)
+      alert(`Teacher ${e.target[0].value} created` );
+  
+    });
+  };
+
   const openModal = () => {
     setModalIsOpen(true);
   };
   return (
+
     <div className="App">
       <div className="top-section">
         <div className="teachers-div">
-            <span>Select Teacher:</span>
-            <select
-              name="selectList"
-              id="selectList"
-              onChange={(event) => {
-                setCurrentTeacher(event.target.value);
-              }}
-            >
-              {allTeachers.map((teacher) => {
-                return (
-                  <option value={teacher["teacher_id"]}>
-                    {teacher["teacher_name"]}
-                  </option>
-                );
-              })}
-            </select>
+          <span>Select Teacher:</span>
+          <select
+            name="selectList"
+            id="selectList"
+            onChange={(event) => {
+              setCurrentTeacher(event.target.value);
+            }}
+          >
+            {allTeachers.map((teacher) => {
+              return (
+                <option value={teacher["teacher_id"]}>
+                  {teacher["teacher_name"]}
+                </option>
+              );
+            })}
+          </select>
         </div>
-      
+
         <div className="view-div">
           <span>Choose Your View:</span>
           <input
@@ -88,8 +108,23 @@ function App() {
           />{" "}
           Month View
         </div>
+
+        <div className="view-div" style={{ marginLeft: "50px" }}>
+          <form
+            onSubmit={(e) => {
+              createTeacher(e);
+            }}
+          >
+            <input type="text" placeholder="Enter teacher name" />{" "}
+            <button type="submit" className="submit-btn">
+              Create Teacher
+            </button>
+          </form>
+        </div>
       </div>
-      <button className="add-schedule-btn" onClick={openModal}>+</button>
+      <button className="add-schedule-btn" onClick={openModal}>
+        +
+      </button>
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={() => {
@@ -110,6 +145,7 @@ function App() {
           <WeekComponent
             teacher_id={currentTeacher}
             addSchedule={addSchedule}
+            setAddedSchedule={setAddedSchedule}
           ></WeekComponent>
         ) : isWeekView == 2 ? (
           <DayComponent
@@ -117,7 +153,9 @@ function App() {
             addSchedule={addSchedule}
             setAddedSchedule={setAddedSchedule}
           ></DayComponent>
-        ) : <MonthComponent teacher_id={currentTeacher}></MonthComponent>}
+        ) : (
+          <MonthComponent teacher_id={currentTeacher}></MonthComponent>
+        )}
       </div>
     </div>
   );

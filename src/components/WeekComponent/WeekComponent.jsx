@@ -4,13 +4,17 @@ import Modal from "react-modal";
 import AddTopicComponent from "../AddTopicComponent/AddTopicComponent";
 import axios from "axios";
 import BASE_URL from "../../utilities/Constants";
-function WeekComponent({ teacher_id, addSchedule }) {
+function WeekComponent({ teacher_id, addSchedule, setAddedSchedule }) {
   const [currentWeekStart, setCurrentWeekStart] = useState("2021-02-01");
   const [currentWeekEnd, setCurrentWeekEnd] = useState("2021-02-07");
 
   const [ids, setIds] = useState([1, 2, 3, 4, 5, 6, 7]);
   const [weekCount, setWeekCount] = useState(1);
   const [modalIsOpen, setModalIsOpen] = useState(false);
+
+  const [startingTime, setStartingTime] = useState(0);
+  const [endingTime, setEndingTime] = useState(0);
+  const [currentDayStart, setCurrentDayStart] = useState("");
 
   const getPrevWeek = () => {
     let weekStart = currentWeekStart;
@@ -67,7 +71,7 @@ function WeekComponent({ teacher_id, addSchedule }) {
         },
       })
       .then(function (response) {
-        console.log("response data", response.data);
+        console.log("response data WEEK", response.data);
         setUI(response.data);
       });
   };
@@ -118,7 +122,7 @@ function WeekComponent({ teacher_id, addSchedule }) {
 
     let j = 0;
     for (let i = 0; i < 24; i++) {
-      timeColumnContent += `<p style="position:absolute;margin-top:${j}px">${hrs[i]}hrs</p>`;
+      timeColumnContent += `<p style="width:100%; color:grey; font-weight:700; position:absolute;margin-top:${j}px">${hrs[i]} hrs</p>`;
       j += 42;
     }
 
@@ -146,7 +150,7 @@ function WeekComponent({ teacher_id, addSchedule }) {
       marginTop.push(top * 42);
     }
 
-    console.log("colid", colId);
+
 
     for (let i = 0; i < colId.length; i++) {
       let x = document.getElementById(colId[i]);
@@ -155,16 +159,17 @@ function WeekComponent({ teacher_id, addSchedule }) {
         data[i]["scheduled_start_time"],
         data[i]["scheduled_end_time"]
       );
-      let y = `<div class="has-topic" style="z-index:100;margin-top:${
+      
+      let y = `<div class="has-topic" style="margin-top:${
         marginTop[i]
-      }px; color:#fafafa; background-color:#757de8; height:${
+      }px; height:${
         duration * 42
-      }px"><span style="font-size:14px">${
+      }px"><p class="header">${
         data[i]["scheduled_topic"]
-      }</span> from <span style="font-size:10px">${
+      }</p><p style="font-size:10px">${
         data[i]["scheduled_start_time"]
-      } to ${data[i]["scheduled_end_time"]}</span></div>`;
-      if (x) x.innerHTML = y;
+      } to ${data[i]["scheduled_end_time"]}</p></div>`;
+      if (x) x.innerHTML =x.innerHTML + y;
     }
   };
 
@@ -182,57 +187,38 @@ function WeekComponent({ teacher_id, addSchedule }) {
     return hrs;
   };
 
-  const [startingTime, setStartingTime] = useState(0);
-  const [endingTime, setEndingTime] = useState(0);
+  function calculateDivRanges(startingCoordinate, offset)
+  {
+    let ranges = []
+    ranges.push(startingCoordinate)
+      for(let i = 0; i<24; i++)
+      {
+          ranges.push(ranges[i] + offset)
+      }
+      console.log(ranges);
+      return ranges
+  }
+
+  
 
   const timeBasedOnClientY = (clientY) => {
-    let ranges = [
-      70, 112, 154, 196, 238, 280, 322, 364, 406, 448, 490, 532, 574, 616, 658,
-      700, 742, 784, 826, 868, 910, 952, 994, 1036, 1078,
-    ];
+    let ranges = calculateDivRanges(165, 42)
     for (let i = 0; i < ranges.length; i++) {
       if (clientY <= ranges[i]) {
-        console.log(i);
-        setStartingTime(i);
+        
+        setStartingTime(i-1);
         break;
       }
     }
   };
 
-  const handleDayOne = (event) => {
+  const handleClick = (event) => {
     timeBasedOnClientY(event.pageY);
-    //setModalIsOpen(true);
+    setCurrentDayStart("2021-02-"+event.target.id)
+    setModalIsOpen(true);
   };
 
-  const handleDayTwo = (event) => {
-    timeBasedOnClientY(event.pageY);
-    //setModalIsOpen(true);
-  };
-
-  const handleDayThree = (event) => {
-    timeBasedOnClientY(event.pageY);
-    // setModalIsOpen(true);
-  };
-
-  const handleDayFour = (event) => {
-    timeBasedOnClientY(event.pageY);
-    //setModalIsOpen(true);
-  };
-
-  const handleDayFive = (event) => {
-    timeBasedOnClientY(event.pageY);
-    //setModalIsOpen(true);
-  };
-
-  const handleDaySix = (event) => {
-    timeBasedOnClientY(event.pageY);
-    // setModalIsOpen(true);
-  };
-
-  const handleDaySeven = (event) => {
-    timeBasedOnClientY(event.pageY);
-    //setModalIsOpen(true);
-  };
+  
 
   const generatePrevId = () => {
     let count = weekCount - 1;
@@ -279,7 +265,13 @@ function WeekComponent({ teacher_id, addSchedule }) {
         }}
         shouldCloseOnOverlayClick={true}
       >
-        <AddTopicComponent startingTime={startingTime}></AddTopicComponent>
+        <AddTopicComponent 
+          teacher_id={teacher_id} 
+          teacher_name={teacher_id} 
+          startingTime={startingTime} 
+          date={currentDayStart} 
+          setAddedSchedule={setAddedSchedule}
+          startingTime={startingTime}></AddTopicComponent>
       </Modal>
       <div className="calender-heading">
         <div className="calender-header">⬇️Time - Day➡️</div>
@@ -294,43 +286,36 @@ function WeekComponent({ teacher_id, addSchedule }) {
 
       {handleAllHr()}
 
-      <div className="calender-columns">
+      <div className="calender-columns" onClick={handleClick}>
         <div className="calender-column" id="time-column"></div>
 
         <div
           className="calender-column"
           id={ids[0]}
-          onClick={handleDayOne}
         ></div>
         <div
           className="calender-column"
           id={ids[1]}
-          onClick={handleDayTwo}
         ></div>
         <div
           className="calender-column"
           id={ids[2]}
-          onClick={handleDayThree}
         ></div>
         <div
           className="calender-column"
           id={ids[3]}
-          onClick={handleDayFour}
         ></div>
         <div
           className="calender-column"
           id={ids[4]}
-          onClick={handleDayFive}
         ></div>
         <div
           className="calender-column"
           id={ids[5]}
-          onClick={handleDaySix}
         ></div>
         <div
           className="calender-column"
           id={ids[6]}
-          onClick={handleDaySeven}
         ></div>
       </div>
     </div>
