@@ -19,9 +19,7 @@ function DayComponent({ teacher_id, addSchedule ,setAddedSchedule }) {
   }, [dayCount, teacher_id, addSchedule]);
 
   const clearData = () => {
-    
       let x = document.getElementById(id);
-      // console.log(x);
       if (x) x.innerHTML = "";
     
   };
@@ -36,8 +34,6 @@ function DayComponent({ teacher_id, addSchedule ,setAddedSchedule }) {
         },
       })
       .then(function (response) {
-        console.log("response data", response.data);
-        
         setUI(response.data);
       });
   };
@@ -59,10 +55,8 @@ function DayComponent({ teacher_id, addSchedule ,setAddedSchedule }) {
   }
 
   const setUI = (data) => {
-    console.log("Day-data", data);
     let colId = [];
     let marginTop = [];
-    //console.log("data",data);
 
     for (let i = 0; i < data.length; i++) {
       let id = calculateColId(data[i]["scheduled_date"]);
@@ -94,13 +88,11 @@ function DayComponent({ teacher_id, addSchedule ,setAddedSchedule }) {
   const calculateColId = (givenDate) => {
     let onlyDate = givenDate.split("T");
     let onlyDay = onlyDate[0].split("-");
-    console.log("given Date id ", onlyDay[2]);
     return parseInt(onlyDay[2]);
   };
 
   const calculateMarginTop = (givenStartTime) => {
     let hrs = givenStartTime.split(":")[0];
-    console.log(hrs);
     return hrs;
   };
 
@@ -110,7 +102,6 @@ function DayComponent({ teacher_id, addSchedule ,setAddedSchedule }) {
     let endHrs = parseInt (endTime.split(":")[0])
 
     let height = endHrs - startHrs
-    console.log("height", height);
     return height
 }
 
@@ -166,7 +157,6 @@ function DayComponent({ teacher_id, addSchedule ,setAddedSchedule }) {
           
           ranges.push(ranges[i] + offset)
       }
-      console.log(ranges);
       return ranges
   }
 
@@ -175,7 +165,6 @@ function DayComponent({ teacher_id, addSchedule ,setAddedSchedule }) {
     let ranges = calculateDivRanges(165, 42)
     for (let i = 0; i < ranges.length; i++) {
       if (clientY <= ranges[i]) {
-        console.log("Clicked at time", i-1);
         setStartingTime(i-1);
         break;
       }
@@ -207,7 +196,7 @@ function DayComponent({ teacher_id, addSchedule ,setAddedSchedule }) {
           {">"}
         </button>
         </div>
-      <Modal className = "create-schedule-modal"
+      <Modal
         isOpen={modalIsOpen}
         onRequestClose={() => {
           setModalIsOpen(false);

@@ -49,7 +49,8 @@ function WeekComponent({ teacher_id, addSchedule, setAddedSchedule }) {
   useEffect(() => {
     clearData();
     setIncomingDataInUI();
-    console.log("Fetching weekview for ", teacher_id);
+    setAddedSchedule(false);
+    console.log("hmne nhi dekha");
   }, [weekCount, teacher_id, addSchedule]);
 
   const clearData = () => {

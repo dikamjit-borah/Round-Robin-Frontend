@@ -11,12 +11,13 @@ function AddTopicComponent({
   date,
 }) {
   function add0ToDate() {
+    
     if (!!!date) return "";
     let newDate;
     let yymmdd = date.split("-");
     let dd = date.split("-")[2];
 
-    if (parseInt(dd) <= 9) {
+    if (dd.indexOf(0) == -1 && parseInt(dd) <= 9) {
       dd = "0" + dd;
     }
 
@@ -31,7 +32,6 @@ function AddTopicComponent({
     } else {
       hrs = timeIndex + ":00";
     }
-    console.log(hrs);
     return hrs;
   }
 
@@ -75,9 +75,7 @@ function AddTopicComponent({
         scheduled_end_time,
       },
     }).then(function (response) {
-      console.log("isvalid start", response.data);
       if (!response.data["isValidStart"]) {
-        setAddedSchedule(true);
         alert("Time overlap! Please adjust start and end time");
       }
       else{
